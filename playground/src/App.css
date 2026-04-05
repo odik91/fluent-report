@@ -1,0 +1,315 @@
+:root {
+  --bg: #eef0f4;
+  --panel: #ffffff;
+  --border: #d8dce6;
+  --text: #1a1d26;
+  --muted: #5c6370;
+  --accent: #1d6b4a;
+  --accent-hover: #15533a;
+  --danger: #b42318;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(20, 24, 35, 0.08);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.45;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 2rem;
+}
+
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.app-header p {
+  margin: 0.2rem 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.header-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.header-links a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.header-links a:hover {
+  text-decoration: underline;
+}
+
+.demo-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.demo-tabs button {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0.65rem 1.25rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--muted);
+  cursor: pointer;
+  border-right: 1px solid var(--border);
+}
+
+.demo-tabs button:last-child {
+  border-right: none;
+}
+
+.demo-tabs button:hover {
+  color: var(--text);
+  background: #f8f9fb;
+}
+
+.demo-tabs button.active {
+  color: var(--accent);
+  background: #f0faf5;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.toolbar button,
+.toolbar a.button-link {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.toolbar button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.toolbar button.primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.toolbar button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.toolbar .hint {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-left: 0.25rem;
+}
+
+.gui-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 400px);
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .gui-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel.gui-builder {
+  min-height: 0;
+}
+
+.gui-builder-body {
+  padding: 0.65rem 0.75rem 0.85rem;
+  max-height: min(78vh, 920px);
+  overflow: auto;
+  background: #fafbfc;
+}
+
+.gui-data-textarea {
+  width: 100%;
+  min-height: 420px;
+  flex: 1;
+  border: none;
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+  font-family: ui-monospace, "Cascadia Code", "Fira Code", monospace;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  resize: vertical;
+  color: var(--text);
+  background: #fff;
+}
+
+.gui-data-textarea:focus {
+  outline: 2px solid rgba(29, 107, 74, 0.35);
+  outline-offset: -2px;
+}
+
+.editor-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 960px) {
+  .editor-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.panel-header {
+  padding: 0.55rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  background: #fafbfc;
+}
+
+.panel textarea {
+  width: 100%;
+  min-height: 420px;
+  flex: 1;
+  border: none;
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+  font-family: ui-monospace, "Cascadia Code", "Fira Code", monospace;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  resize: vertical;
+  color: var(--text);
+  background: #fff;
+}
+
+.panel textarea:focus {
+  outline: 2px solid rgba(29, 107, 74, 0.35);
+  outline-offset: -2px;
+}
+
+.alert {
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.alert.error {
+  background: #fef2f2;
+  border: 1px solid #fecdca;
+  color: var(--danger);
+}
+
+.alert.success {
+  background: #f0faf5;
+  border: 1px solid #b8e0cc;
+  color: #0d4f36;
+}
+
+.preview-wrap {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  background: #fafbfc;
+}
+
+.preview-frame {
+  flex: 1;
+  border: none;
+  width: 100%;
+  min-height: 520px;
+  background: #525659;
+}
+
+.preview-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.95rem;
+  padding: 2rem;
+  text-align: center;
+}
