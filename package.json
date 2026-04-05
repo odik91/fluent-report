@@ -6,7 +6,7 @@
   "author": "Ali Shoddiqien",
   "repository": {
     "type": "git",
-    "url": "https://github.com/alishoddiqien/fluent-report.git"
+    "url": "https://github.com/odik91/fluent-report.git"
   },
   "keywords": [
     "report",
@@ -15,7 +15,8 @@
     "typescript",
     "erp",
     "ireport",
-    "fluent"
+    "fluent",
+    "report-builder"
   ],
   "sideEffects": false,
   "main": "./dist/index.js",
@@ -31,6 +32,11 @@
       "types": "./dist/react.d.ts",
       "import": "./dist/react.mjs",
       "require": "./dist/react.js"
+    },
+    "./builder": {
+      "types": "./dist/builder.d.ts",
+      "import": "./dist/builder.mjs",
+      "require": "./dist/builder.js"
     }
   },
   "files": [
@@ -38,7 +44,8 @@
   ],
   "scripts": {
     "build": "tsup",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "playground": "npm run dev --prefix playground"
   },
   "dependencies": {
     "jspdf": "^2.5.2",

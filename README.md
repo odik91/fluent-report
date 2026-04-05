@@ -10,6 +10,42 @@ npm install @alishoddiqien/fluent-report
 
 Di aplikasi React, pastikan `react` dan `react-dom` (^18 atau ^19) sudah terpasang.
 
+## Report builder (GUI, seperti *Gui Based* di [fluentReports demo](https://fluentreports.com/demo.html))
+
+Komponen `ReportBuilder` membangun `ReportDefinition` secara visual. Setiap `onChange` menghasilkan objek baru — serialkan ke JSON untuk disimpan di API/DB (sama seperti hasil desain iReport yang diekspor).
+
+```tsx
+import { useState } from "react";
+import type { ReportDefinition } from "@alishoddiqien/fluent-report";
+import {
+  ReportBuilder,
+  createDefaultReportDefinition,
+  serializeReportDefinition,
+} from "@alishoddiqien/fluent-report/builder";
+
+export function ReportDesignerRoute() {
+  const [definition, setDefinition] = useState<ReportDefinition>(() => createDefaultReportDefinition());
+
+  async function save() {
+    const json = serializeReportDefinition(definition);
+    await fetch("/api/report-templates", { method: "POST", body: json });
+  }
+
+  return (
+    <>
+      <ReportBuilder value={definition} onChange={setDefinition} />
+      <button type="button" onClick={() => void save()}>
+        Simpan template (JSON)
+      </button>
+    </>
+  );
+}
+```
+
+Entry point: `@alishoddiqien/fluent-report/builder` (ikut ter-bundle ke aplikasi Anda). Dari **npm**, impor subpath ini biasanya langsung berfungsi lewat field `exports` pada `package.json`.
+
+Jika Anda **meng-alias** seluruh paket ke satu file (monorepo / `file:..`), di **Vite** urutkan alias agar `@…/fluent-report/builder` dan `@…/fluent-report/react` dicocokkan **sebelum** `@…/fluent-report` (lihat `playground/vite.config.ts`).
+
 ## Menyimpan & memuat definisi (ERP)
 
 ```ts
@@ -120,6 +156,30 @@ Data runtime (contoh):
   ]
 }
 ```
+
+## Playground (UI demo)
+
+Aplikasi Vite + React di folder `playground/` meniru pola [fluentReports Live Demo](https://fluentreports.com/demo.html): tab **Berbasis GUI** (`ReportBuilder`), **Berbasis JSON**, dan **Pratinjau PDF**.
+
+Pertama kali, pasang dependensi playground:
+
+```bash
+cd playground && npm install && cd ..
+```
+
+Lalu dari akar repo:
+
+```bash
+npm run playground
+```
+
+Atau langsung:
+
+```bash
+cd playground && npm run dev
+```
+
+Buka `http://localhost:5174` (port default Vite di `playground/vite.config.ts`).
 
 ## Publish ke npm
 
