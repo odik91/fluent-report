@@ -90,7 +90,14 @@ function applyTextBand(
   const lh = lineHeightMm(fs);
   const align = band.align ?? "left";
   const pdfAlign = align === "center" ? "center" : align === "right" ? "right" : "left";
-  doc.text(lines, marginLeft, y, { maxWidth: innerWidth, align: pdfAlign });
+  // jsPDF: untuk center/right, x adalah titik acuan (tengah / tepi kanan blok), bukan margin kiri.
+  const anchorX =
+    align === "center"
+      ? marginLeft + innerWidth / 2
+      : align === "right"
+        ? marginLeft + innerWidth
+        : marginLeft;
+  doc.text(lines, anchorX, y, { maxWidth: innerWidth, align: pdfAlign });
   const height = Math.max(1, lines.length) * lh;
   return y + height + (band.marginBottomMm ?? 2);
 }
