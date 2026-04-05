@@ -25,6 +25,13 @@ function assertBand(b: unknown): asserts b is ReportBand {
     }
     return;
   }
+  if (b.type === "image") {
+    if (typeof b.src !== "string") throw new Error("Image band requires src");
+    if (typeof b.widthMm !== "number" || typeof b.heightMm !== "number") {
+      throw new Error("Image band requires widthMm and heightMm");
+    }
+    return;
+  }
   throw new Error(`Unknown band type: ${b.type}`);
 }
 

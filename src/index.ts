@@ -2,6 +2,8 @@ export {
   REPORT_DEFINITION_VERSION,
   type ColumnFormat,
   type HAlign,
+  type ImageBand,
+  type ImagePdfFormat,
   type PageFormat,
   type ReportBand,
   type ReportData,

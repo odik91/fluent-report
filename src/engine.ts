@@ -2,7 +2,14 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
 import { getByPath, renderTemplate } from "./template";
-import type { ReportBand, ReportData, ReportDefinition, TableColumn } from "./types";
+import type {
+  HAlign,
+  ImageBand,
+  ReportBand,
+  ReportData,
+  ReportDefinition,
+  TableColumn,
+} from "./types";
 
 function marginDefaults(meta: ReportDefinition["meta"]) {
   const m = meta.marginMm ?? {};
@@ -102,6 +109,64 @@ function applyTextBand(
   return y + height + (band.marginBottomMm ?? 2);
 }
 
+function parseImageForPdf(
+  band: ImageBand,
+): { data: string; pdfFormat: "PNG" | "JPEG" | "WEBP" } | null {
+  const src = band.src.trim();
+  if (!src) return null;
+  const m = /^data:([^;]+);base64,([\s\S]+)$/i.exec(src);
+  if (m) {
+    const mime = m[1].toLowerCase();
+    const data = m[2].replace(/\s/g, "");
+    const pdfFormat = mime.includes("png")
+      ? "PNG"
+      : mime.includes("webp")
+        ? "WEBP"
+        : "JPEG";
+    return { data, pdfFormat };
+  }
+  if (band.format) {
+    return { data: src.replace(/\s/g, ""), pdfFormat: band.format };
+  }
+  return null;
+}
+
+function imageDrawX(align: HAlign | undefined, marginLeft: number, innerWidth: number, drawW: number): number {
+  const a = align ?? "left";
+  if (a === "center") return marginLeft + (innerWidth - drawW) / 2;
+  if (a === "right") return marginLeft + innerWidth - drawW;
+  return marginLeft;
+}
+
+function applyImageBand(
+  doc: jsPDF,
+  band: ImageBand,
+  y: number,
+  marginLeft: number,
+  innerWidth: number,
+): number {
+  const payload = parseImageForPdf(band);
+  const mb = band.marginBottomMm ?? 2;
+  if (!payload) return y + mb;
+
+  let w = band.widthMm;
+  let h = band.heightMm;
+  if (w <= 0 || h <= 0) return y + mb;
+  if (w > innerWidth && w > 0) {
+    const s = innerWidth / w;
+    w = innerWidth;
+    h = h * s;
+  }
+
+  const x = imageDrawX(band.align, marginLeft, innerWidth, w);
+  try {
+    doc.addImage(payload.data, payload.pdfFormat, x, y, w, h);
+  } catch {
+    /* format tidak didukung atau data rusak */
+  }
+  return y + h + mb;
+}
+
 function columnStylesForBand(
   band: Extract<ReportBand, { type: "table" }>,
   innerWidth: number,
@@ -152,6 +217,11 @@ export function generateReportPdf(definition: ReportDefinition, data: ReportData
 
     if (band.type === "text") {
       y = applyTextBand(doc, band, data, y, m.left, innerW, defaultFs);
+      continue;
+    }
+
+    if (band.type === "image") {
+      y = applyImageBand(doc, band, y, m.left, innerW);
       continue;
     }
 

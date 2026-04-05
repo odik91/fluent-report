@@ -157,6 +157,12 @@ body {
   margin-left: 0.25rem;
 }
 
+@media (max-width: 960px) {
+  .fr-report-builder {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 .gui-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 400px);

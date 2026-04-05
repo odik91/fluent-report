@@ -12,7 +12,7 @@ Di aplikasi React, pastikan `react` dan `react-dom` (^18 atau ^19) sudah terpasa
 
 ## Report builder (GUI, seperti *Gui Based* di [fluentReports demo](https://fluentreports.com/demo.html))
 
-Komponen `ReportBuilder` membangun `ReportDefinition` secara visual. Setiap `onChange` menghasilkan objek baru — serialkan ke JSON untuk disimpan di API/DB (sama seperti hasil desain iReport yang diekspor).
+Komponen `ReportBuilder` membangun `ReportDefinition` secara visual (panel **Properti** + **Kanvas** band, garis margin merah, tombol **+ Gambar** untuk logo). Setiap `onChange` menghasilkan objek baru — serialkan ke JSON untuk disimpan di API/DB. Root memakai class `fr-report-builder`; di CSS Anda bisa override grid (playground memakai satu kolom di layar sempit).
 
 ```tsx
 import { useState } from "react";
@@ -108,6 +108,7 @@ const { downloadPdf, isGenerating, error } = useFluentReport(definition, data, {
 - `meta`: judul PDF, ukuran halaman, orientasi, margin.
 - `bands`: urutan dari atas ke bawah:
   - `text` — teks statis + placeholder `{{path.ke.field}}` pada objek data root.
+  - `image` — logo/gambar: `src` berisi **data URL** (`data:image/png;base64,...`), plus `widthMm`, `heightMm`, `align`. Untuk PDF andal di ERP, hindari URL eksternal mentah (CORS); simpan base64 atau URL yang Anda resolve ke data URL di server.
   - `spacer` — jarak vertikal (mm).
   - `table` — `dataPath` menuju array baris; `columns` memetakan kolom ke `field` per baris dengan format angka/mata uang/tanggal.
 

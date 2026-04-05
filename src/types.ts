@@ -56,7 +56,24 @@ export interface TableBand {
   headerFillColor?: [number, number, number];
 }
 
-export type ReportBand = TextBand | SpacerBand | TableBand;
+/** Format gambar untuk `jsPDF.addImage` (hindari SVG di sini) */
+export type ImagePdfFormat = "PNG" | "JPEG" | "WEBP";
+
+/**
+ * Logo / gambar statis. `src` sebaiknya data URL (`data:image/png;base64,...`) agar PDF bisa dibuat offline;
+ * URL `https://` bisa gagal karena CORS / async.
+ */
+export interface ImageBand {
+  type: "image";
+  src: string;
+  format?: ImagePdfFormat;
+  widthMm: number;
+  heightMm: number;
+  align?: HAlign;
+  marginBottomMm?: number;
+}
+
+export type ReportBand = TextBand | SpacerBand | TableBand | ImageBand;
 
 /**
  * Serializable report layout (store in DB / file). Process with `generateReportPdf`.
